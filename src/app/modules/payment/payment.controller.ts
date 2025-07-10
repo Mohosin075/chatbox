@@ -6,7 +6,8 @@ import { StatusCodes } from 'http-status-codes';
 
 const createStripePayment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await PaymentService.payWithStripeInOneGo(req.body);
+    const { user } = req;
+    const result = await PaymentService.payWithStripeInOneGo(user, req.body);
 
     sendResponse(res, {
       success: true,

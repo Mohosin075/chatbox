@@ -33,8 +33,12 @@ const updateCategoryToDB = async (id: string, payload: ICategory) => {
   if(!isExistCategory){
     throw new ApiError(StatusCodes.BAD_REQUEST, "Category doesn't exist");
   }
+
+  if(isExistCategory.image && !payload.image) {
+    unlinkFile(isExistCategory.image);
+  }
   
-  if (payload.image) {
+  if (payload.image && isExistCategory.image !== '') {
     unlinkFile(isExistCategory?.image);
   }
 

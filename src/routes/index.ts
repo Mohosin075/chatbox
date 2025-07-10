@@ -8,6 +8,7 @@ import { ChatRoutes } from '../app/modules/chat/chat.routes';
 import { MessageRoutes } from '../app/modules/message/message.routes';
 import { NotificationRoutes } from '../app/modules/notification/notification.routes';
 import { CategoryRoutes } from '../app/modules/category/category.route';
+import { PlanRoutes } from '../app/modules/plan/plan.routes';
 const router = express.Router();
 
 const apiRoutes = [
@@ -18,6 +19,9 @@ const apiRoutes = [
   {
     path: '/auth',
     route: AuthRoutes,
+  },
+  { path: "/plan", 
+    route: PlanRoutes 
   },
   {
     path: '/categories',

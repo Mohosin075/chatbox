@@ -7,7 +7,6 @@ const payload = {
   name: 'Administrator',
   email: config.super_admin.email,
   role: USER_ROLES.SUPER_ADMIN,
-  isLocationGranted: false,
   password: config.super_admin.password,
   verified: true,
 };

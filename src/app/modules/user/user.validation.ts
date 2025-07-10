@@ -7,37 +7,19 @@ const createUserZodSchema = z.object({
     email: z.string({ required_error: 'Email is required' }),
     password: z.string({ required_error: 'Password is required' }),
     location: z.string({ required_error: 'Location is required' }),
-    profile: z.string().optional(),
   }),
 });
 
 const updateUserZodSchema = z.object({
-  name: z.string().min(1),
-  contact: z.string().min(1),
-  address: z.string().min(1),
+  name: z.string().optional(),
+  contact: z.string().optional(),
+  email: z.string().optional(),
+  password: z.string().optional(),
+  location: z.string().optional(),
   image: z.string().optional(),
-});
-
-const accessLocationZodSchema = z.object({
-  islocationGranted: z.boolean().optional(),
-});
-
-const addBookmarkZodSchema = z.object({
-  body: z.object({
-    serviceId: z.string({ required_error: 'Service ID is required' }),
-  }),
-});
-
-const removeBookmarkZodSchema = z.object({
-  body: z.object({
-    serviceId: z.string({ required_error: 'Service ID is required' }),
-  }),
 });
 
 export const UserValidation = {
   createUserZodSchema,
   updateUserZodSchema,
-  accessLocationZodSchema,
-  addBookmarkZodSchema,
-  removeBookmarkZodSchema,
 };

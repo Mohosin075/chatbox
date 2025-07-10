@@ -1,38 +1,28 @@
-import mongoose, { Model } from 'mongoose';
+import { Model } from 'mongoose';
 import { USER_ROLES } from '../../../enums/user';
 
-export type IUser = {
-  name: string;
-  role: USER_ROLES;
-  contact: string;
-  email: string;
-  password: string;
-  address: string;
-  isLocationGranted: boolean;
-  latitude?: number;
-  longitude?: number;
-  image?: string;
-  status: 'active' | 'delete';
-  verified: boolean;
-  bookmarks?: mongoose.Types.ObjectId[];
-  bankAccount?: {
-    accountNumber: string;
-    bankName: string;
-    routingNumber: string;
-  };
-  plan?: {
-    type: string;
-    expiresAt: Date;
-  };
-  authentication?: {
+type IAuthenticationProps ={
     isResetPassword: boolean;
     oneTimeCode: number;
     expireAt: Date;
-  };
-};
+}
+
+export type IUser = {
+    name?: string;
+    role: USER_ROLES;
+    phone?: string;
+    email: string;
+    password: string;
+    countryCode?: string;
+    image: string;
+    verified: boolean;
+    subscribe: boolean;
+    isDeleted: boolean;
+    authentication?: IAuthenticationProps;
+}
 
 export type UserModal = {
-  isExistUserById(id: string): any;
-  isExistUserByEmail(email: string): any;
-  isMatchPassword(password: string, hashPassword: string): boolean;
+    isExistUserById(id: string): any;
+    isExistUserByEmail(email: string): any;
+    isMatchPassword(password: string, hashPassword: string): boolean;
 } & Model<IUser>;
