@@ -35,7 +35,7 @@ const handleStripeWebhook = async (req: Request, res: Response) => {
     // Handle the event based on its type
     try {
         switch (eventType) {
-            case 'user.subscription.created':
+            case 'customer.subscription.created':
                 await handleSubscriptionCreated(data as Stripe.Subscription);
                 break;
 

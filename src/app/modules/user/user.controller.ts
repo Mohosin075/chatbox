@@ -16,7 +16,7 @@ const createUser = catchAsync(
       message: 'User created successfully',
       data: result,
     });
-  },
+  }
 );
 
 const getUserProfile = catchAsync(async (req: Request, res: Response) => {
@@ -49,81 +49,7 @@ const updateProfile = catchAsync(
       message: 'Profile updated successfully',
       data: result,
     });
-  },
+  }
 );
 
-//accessLocation
-const accessLocation = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const user = req.user;
-
-    const data = {
-      ...req.body,
-    };
-    const result = await UserService.accessLocationToDB(user, data);
-
-    sendResponse(res, {
-      success: true,
-      statusCode: StatusCodes.OK,
-      message: 'access location data updated successfully',
-      data: result,
-    });
-  },
-);
-
-const addBookmark = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { user } = req;
-    const { serviceId } = req.body;
-
-    const result = await UserService.addBookmarkToDB(user.id, serviceId);
-
-    sendResponse(res, {
-      success: true,
-      statusCode: StatusCodes.OK,
-      message: 'Bookmark added successfully',
-      data: result,
-    });
-  },
-);
-
-const removeBookmark = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { user } = req;
-    const { serviceId } = req.body;
-
-    const result = await UserService.removeBookmarkFromDB(user.id, serviceId);
-
-    sendResponse(res, {
-      success: true,
-      statusCode: StatusCodes.OK,
-      message: 'Bookmark removed successfully',
-      data: result,
-    });
-  },
-);
-
-const getBookmark = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { user } = req;
-
-    const result = await UserService.getBookmarkToDB(user.id);
-
-    sendResponse(res, {
-      success: true,
-      statusCode: StatusCodes.OK,
-      message: 'Bookmark data retrived successfully',
-      data: result,
-    });
-  },
-);
-
-export const UserController = {
-  createUser,
-  getUserProfile,
-  updateProfile,
-  accessLocation,
-  addBookmark,
-  removeBookmark,
-  getBookmark,
-};
+export const UserController = { createUser, getUserProfile, updateProfile };

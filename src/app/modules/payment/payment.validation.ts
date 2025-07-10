@@ -3,7 +3,7 @@ import { Types } from 'mongoose';
 
 export const createPaymentZodSchema = z.object({
   body: z.object({
-    user: z.string({ required_error: 'User ID is required' }),
+    user: z.string({ required_error: 'User ID is required' }).optional(),
     orderId: z.string().optional(),
     amount: z.number({ required_error: 'Amount is required' }).min(1),
     currency: z.string().default('USD'),

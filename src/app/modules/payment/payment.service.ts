@@ -4,13 +4,14 @@ import { Payment } from './payment.model';
 import ApiError from '../../../errors/ApiError';
 import { StatusCodes } from 'http-status-codes';
 import config from '../../../config';
+import { JwtPayload } from 'jsonwebtoken';
 
 const stripe = new Stripe(config.stripe_secret_key as string, {
-  apiVersion: '2025-05-28.basil',
+  apiVersion: '2025-06-30.basil',
 });
 
-const payWithStripeInOneGo = async (data: IPayment) => {
-  const { amount, currency, user, orderId, saveCard, cardDetails } = data;
+const payWithStripeInOneGo = async (user : JwtPayload, data: IPayment) => {
+  const { amount, currency, orderId, saveCard, cardDetails } = data;
 
   const paymentIntent = await stripe.paymentIntents.create({
     amount: Math.round(amount * 100),
