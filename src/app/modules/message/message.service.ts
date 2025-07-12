@@ -5,6 +5,8 @@ import { Chat } from '../chat/chat.model';
 import { JwtPayload } from 'jsonwebtoken';
 import { checkMongooseIDValidation } from '../../../shared/checkMongooseIDValidation';
 import QueryBuilder from '../../builder/QueryBuilder';
+import { Notification } from '../notification/notification.model';
+import { User } from '../user/user.model';
 
 // const sendMessageToDB = async (payload: any): Promise<IMessage> => {
 
@@ -25,21 +27,17 @@ const sendMessageToDB = async (user: JwtPayload, payload: any): Promise<IMessage
   const senderId = user.id;
   const { chatId } = payload;
 
-  // Add sender to payload
   payload.sender = senderId;
 
-  // 1. Validate ObjectId format
   if (!mongoose.Types.ObjectId.isValid(chatId)) {
     throw new Error("Invalid chatId");
   }
 
-  // 2. Find chat
   const chat = await Chat.findById(chatId);
   if (!chat) {
     throw new Error("Chat not found");
   }
 
-  // 3. Ensure sender is a participant
   const isParticipant = chat.participants.some(
     (participantId) => participantId.toString() === senderId
   );
@@ -48,18 +46,101 @@ const sendMessageToDB = async (user: JwtPayload, payload: any): Promise<IMessage
     throw new Error("You are not a participant in this chat");
   }
 
-  // 4. Create message
-  const response = await Message.create(payload);
+  // Save the message
+  const message = await Message.create(payload);
 
-  // 5. Emit message to room
+  // Get other participants (except sender)
+  const otherParticipants = chat.participants.filter(
+    (p) => p.toString() !== senderId
+  );
+
+
+  const isUserExists = await User.findById(senderId);
+  if (!isUserExists) {
+    throw new Error("User not found");
+  }
+
+  const notifications = otherParticipants.map((receiverId) => ({
+    text: `${isUserExists.name} sent you a new message.`,
+    receiver: receiverId,
+    referenceId: message._id,
+    screen: "chat",
+    read: false,
+  }));
+
+  const createdNotifications = await Notification.insertMany(notifications);
+
+
+  // Real-time emit to other users
   //@ts-ignore
   const io = global.io;
   if (io && chatId) {
-    io.emit(`getMessage::${chatId}`, response);
+    // Emit message to chat room
+    io.emit(`getMessage::${chatId}`, message);
+
+  createdNotifications.forEach((notification) => {
+  const receiverId = notification.receiver?.toString();
+  if (receiverId && io) {
+    io.emit(
+      `notification::${receiverId}`,
+      notification
+    );
+  }
+});
   }
 
-  return response;
+  return message;
 };
+
+
+// const sendMessageToDB = async (user: JwtPayload, payload: any): Promise<IMessage> => {
+//   const senderId = user.id;
+//   const { chatId } = payload;
+
+//   // Add sender to payload
+//   payload.sender = senderId;
+
+//   // 1. Validate ObjectId format
+//   if (!mongoose.Types.ObjectId.isValid(chatId)) {
+//     throw new Error("Invalid chatId");
+//   }
+
+//   // 2. Find chat
+//   const chat = await Chat.findById(chatId);
+//   if (!chat) {
+//     throw new Error("Chat not found");
+//   }
+
+//   // 3. Ensure sender is a participant
+//   const isParticipant = chat.participants.some(
+//     (participantId) => participantId.toString() === senderId
+//   );
+
+//   if (!isParticipant) {
+//     throw new Error("You are not a participant in this chat");
+//   }
+
+//   // 4. Create message
+//   const response = await Message.create(payload);
+
+
+//   // after create message sent a notification
+
+
+//   const notification = await Notification.create({})
+
+
+
+
+//   // 5. Emit message to room
+//   //@ts-ignore
+//   const io = global.io;
+//   if (io && chatId) {
+//     io.emit(`getMessage::${chatId}`, response);
+//   }
+
+//   return response;
+// };
 
 
 

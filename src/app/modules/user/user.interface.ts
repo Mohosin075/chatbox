@@ -8,7 +8,7 @@ type IAuthenticationProps ={
 }
 
 export type IUser = {
-    name?: string;
+    name: string;
     role: USER_ROLES;
     phone?: string;
     email: string;
