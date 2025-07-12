@@ -5,7 +5,8 @@ import { StatusCodes } from 'http-status-codes';
 import { MessageService } from './message.service';
 
 const sendMessage = catchAsync(async (req: Request, res: Response) => {
-  const message = await MessageService.sendMessageToDB(req.body);
+  const user = req.user;
+  const message = await MessageService.sendMessageToDB(user, req.body);
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,

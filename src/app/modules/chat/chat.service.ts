@@ -5,6 +5,7 @@ import { Chat } from './chat.model';
 import { JwtPayload } from 'jsonwebtoken';
 
 const createChatToDB = async (payload: IChat): Promise<IChat> => {
+    console.log({payload});
 
     const isExistChat: IChat | null = await Chat.findOne({
         participants: { $all: payload },
@@ -16,6 +17,8 @@ const createChatToDB = async (payload: IChat): Promise<IChat> => {
     const chat: IChat = await Chat.create({ participants: payload });
     return chat;
 }
+
+
 
 const getChatFromDB = async (user: JwtPayload, search: string): Promise<IChat[]> => {
 

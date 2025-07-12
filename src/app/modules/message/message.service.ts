@@ -6,20 +6,48 @@ import { JwtPayload } from 'jsonwebtoken';
 import { checkMongooseIDValidation } from '../../../shared/checkMongooseIDValidation';
 import QueryBuilder from '../../builder/QueryBuilder';
 
-const sendMessageToDB = async (payload: any): Promise<IMessage> => {
+const sendMessageToDB = async (user: JwtPayload, payload: any): Promise<IMessage> => {
+  const senderId = user.id;
+  const { chatId } = payload;
 
-  // save to DB
+  // Add sender to payload
+  payload.sender = senderId;
+
+  // 1. Validate ObjectId format
+  if (!mongoose.Types.ObjectId.isValid(chatId)) {
+    throw new Error("Invalid chatId");
+  }
+
+  // 2. Find chat
+  const chat = await Chat.findById(chatId);
+  if (!chat) {
+    throw new Error("Chat not found");
+  }
+
+  // 3. Ensure sender is a participant
+  const isParticipant = chat.participants.some(
+    (participantId) => participantId.toString() === senderId
+  );
+
+  if (!isParticipant) {
+    throw new Error("You are not a participant in this chat");
+  }
+
+  // 4. Create message
   const response = await Message.create(payload);
 
+  // 5. Emit message to room
   //@ts-ignore
   const io = global.io;
-  if (io && payload.chatId) {
-    // send message to specific chatId Room
-    io.emit(`getMessage::${payload?.chatId}`, response);
+  if (io && chatId) {
+    io.to(chatId.toString()).emit(`getMessage::${chatId}`, response);
   }
 
   return response;
 };
+
+
+
 
 const getMessageFromDB = async (id: string, user: JwtPayload, query: Record<string, any>): Promise<{ messages: IMessage[], pagination: any, participant:any  }> => {
   checkMongooseIDValidation(id, "Chat")
