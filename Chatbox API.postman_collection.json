@@ -1,0 +1,542 @@
+{
+	"info": {
+		"_postman_id": "07ee1d9a-3ad4-4d8a-be2f-5869adba4ffc",
+		"name": "Chatbox API",
+		"description": "Postman collection for Chatbox backend API.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45907329"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"check@example.com\",\n  \"password\": \"12345678\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forget Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"mohosin@example.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/forget-password",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"forget-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"mohosin@example.com\",\n  \"oneTimeCode\": 6468\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/verify-email",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"verify-email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "a45a09dfe0a3266b62bf6d3cc10b5fcca2d50ebc14ccb2531e1a935555eba979",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"currentPassword\": \"12345678\",\n  \"newPassword\": \"123456\",\n  \"confirmPassword\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/reset-password",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"currentPassword\": \"123456\",\n  \"newPassword\": \"12345678\",\n  \"confirmPassword\": \"12345678\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/change-password",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/user/profile",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Md Mohosin Ali\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/user/profile",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"me\",\r\n    \"email\": \"check@example.com\",\r\n    \"password\": \"12345678\",\r\n    \"location\": \"dhaka\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Chat",
+			"item": [
+				{
+					"name": "Create Chat",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{me}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"participants\": [\"68729ee487d7b5b5afdb2d36\"]\n}\n\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/chats",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"chats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Chats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{me}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/chats",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"chats"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Message",
+			"item": [
+				{
+					"name": "Send Message",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{me}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"chatId\": \"6872bfda810232296cd16458\",\n  \"text\": \"How are you?\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/messages",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"messages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Message by ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{me}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/messages/6872bfda810232296cd16458",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"messages",
+								"6872bfda810232296cd16458"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notification",
+			"item": [
+				{
+					"name": "Get Notifications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/notifications",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Admin Notifications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/notifications/admin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notifications",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read Notification",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/notifications",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read Admin Notification",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/notifications/admin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notifications",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000/api/v1"
+		},
+		{
+			"key": "admin_token",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NzI5Y2I0ZmJlNjYxOWEzODYyOTU1ZiIsInJvbGUiOiJTVVBFUl9BRE1JTiIsImVtYWlsIjoid2ViLm1vaG9zaW5AZ21haWwuY29tIiwiaWF0IjoxNzUyMzQxODI0LCJleHAiOjE3NTM2Mzc4MjR9.GdHFYEvDSsE3KrGI0Q10yKFlut9JQUdHie4g5wZOqlU",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NzI5ZWU0ODdkN2I1YjVhZmRiMmQzNiIsInJvbGUiOiJVU0VSIiwiZW1haWwiOiJtb2hvc2luQGV4YW1wbGUuY29tIiwiaWF0IjoxNzUyMzQyMjg1LCJleHAiOjE3NTM2MzgyODV9.dgABc8Up48tfxqpPDX_3F9Hmu_KWEYQ9VO_N8aIdwEs"
+		},
+		{
+			"key": "me",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NzJhMWI4ZTM0NDRjNWE0OGU0NzRhNSIsInJvbGUiOiJVU0VSIiwiZW1haWwiOiJtZUBleGFtcGxlLmNvbSIsImlhdCI6MTc1MjM0MzQ2NCwiZXhwIjoxNzUzNjM5NDY0fQ.6WrZTROaGrsIOpNhrCNMpv5eHkv3jemfaerYXzL2I6g",
+			"type": "string"
+		},
+		{
+			"key": "check_user",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NzJhZmIxNDA3ZTBkZWZjYTlmMDdmNCIsInJvbGUiOiJVU0VSIiwiZW1haWwiOiJjaGVja0BleGFtcGxlLmNvbSIsImlhdCI6MTc1MjM0NjU3OSwiZXhwIjoxNzUzNjQyNTc5fQ.GNFHu2nhMT6lkKJBTlpMcQRlOvXgZGU10iPD6BO9euE",
+			"type": "string"
+		}
+	]
+}
