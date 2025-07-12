@@ -8,17 +8,9 @@ export default {
   node_env: process.env.NODE_ENV,
   port: process.env.PORT,
   bcrypt_salt_rounds: process.env.BCRYPT_SALT_ROUNDS,
-  stripe_secret_key: process.env.STRIPE_API_SECRET, // unified naming for Stripe secret key
   jwt: {
     jwt_secret: process.env.JWT_SECRET,
     jwt_expire_in: process.env.JWT_EXPIRE_IN,
-    jwtRefreshSecret: process.env.JWT_REFRESH_SECRET,
-    jwtRefreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN
-  },
-  stripe: {
-    stripeSecretKey: process.env.STRIPE_API_SECRET, // matches .env
-    webhookSecret: process.env.WEBHOOK_SECRET, // matches .env
-    paymentSuccess: process.env.SUCCESS_URL
   },
   email: {
     from: process.env.EMAIL_FROM,
@@ -31,14 +23,4 @@ export default {
     email: process.env.SUPER_ADMIN_EMAIL,
     password: process.env.SUPER_ADMIN_PASSWORD,
   },
-  twilio: {
-    accountSid: process.env.TWILIO_ACCOUNT_SID,
-    authToken: process.env.TWILIO_AUTH_TOKEN,
-    twilioNumber: process.env.TWILIO_NUMBER
-  },
-  cloudinary: {
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET
-  }
 };
