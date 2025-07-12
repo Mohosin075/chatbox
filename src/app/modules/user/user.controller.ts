@@ -7,7 +7,7 @@ import { UserService } from './user.service';
 
 const createUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { ...userData } = req.body;
+    const { ...userData} = req.body;
     const result = await UserService.createUserToDB(userData);
 
     sendResponse(res, {
@@ -18,6 +18,19 @@ const createUser = catchAsync(
     });
   }
 );
+
+
+const getAllUsers = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await UserService.getAllUsersFromDB();  
+    
+     sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: 'Profile data retrieved successfully',
+    data: result,
+  });
+  })
 
 const getUserProfile = catchAsync(async (req: Request, res: Response) => {
   const user = req.user;
@@ -52,4 +65,4 @@ const updateProfile = catchAsync(
   }
 );
 
-export const UserController = { createUser, getUserProfile, updateProfile };
+export const UserController = { createUser, getUserProfile, updateProfile, getAllUsers };

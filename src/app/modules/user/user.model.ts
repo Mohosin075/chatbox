@@ -10,12 +10,12 @@ const userSchema = new Schema<IUser, UserModal>(
     {
         name: {
             type: String,
-            required: false,
+            required: true,
         },
         role: {
             type: String,
             enum: Object.values(USER_ROLES),
-            required: true,
+            required: false,
         },
         email: {
             type: String,
@@ -29,7 +29,7 @@ const userSchema = new Schema<IUser, UserModal>(
         },
         password: {
             type: String,
-            required: false,
+            required: true,
             select: 0,
             minlength: 8,
         },

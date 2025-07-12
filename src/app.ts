@@ -4,7 +4,6 @@ import { StatusCodes } from 'http-status-codes';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import router from './routes';
 import { Morgan } from './shared/morgen';
-import './tasks/cronTasks';
 import rateLimit from 'express-rate-limit';
 import requestIp from 'request-ip';
 import ApiError from './errors/ApiError';

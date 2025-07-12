@@ -40,6 +40,12 @@ const createUserToDB = async (payload: Partial<IUser>): Promise<IUser> => {
   return createUser;
 };
 
+
+const getAllUsersFromDB = async (): Promise<IUser[]> => {
+  const result = await User.find({}).select('+authentication'); 
+  return result;
+}
+
 const getUserProfileFromDB = async (
   user: JwtPayload
 ): Promise<Partial<IUser>> => {
@@ -78,4 +84,5 @@ export const UserService = {
   createUserToDB,
   getUserProfileFromDB,
   updateProfileToDB,
+  getAllUsersFromDB
 };

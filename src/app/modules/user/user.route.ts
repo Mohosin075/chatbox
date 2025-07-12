@@ -25,6 +25,7 @@ router
 
 router
   .route('/')
+  .get(auth(USER_ROLES.SUPER_ADMIN), UserController.getAllUsers)
   .post(
     validateRequest(UserValidation.createUserZodSchema),
     UserController.createUser

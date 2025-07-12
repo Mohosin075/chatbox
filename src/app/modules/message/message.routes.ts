@@ -6,28 +6,29 @@ import { getSingleFilePath } from '../../../shared/getFilePath';
 import fileUploadHandler from '../../middlewares/fileUploadHandler';
 const router = express.Router();
 
-router.post('/',
-  auth(USER_ROLES.USER, USER_ROLES.PROVIDER),
+router.post(
+  '/',
+  auth(USER_ROLES.USER),
   fileUploadHandler(),
   async (req, res, next) => {
     try {
-      const image = getSingleFilePath(req.files, "image");
+      const image = getSingleFilePath(req.files, 'image');
       req.body = {
         sender: req.user.id,
         image,
-        ...req.body
+        ...req.body,
       };
       next();
     } catch (error) {
-      res.status(400).json({ message: "Failed to upload Category Image" });
+      res.status(400).json({ message: 'Failed to upload Category Image' });
     }
   },
-  MessageController.sendMessage
+  MessageController.sendMessage,
 );
 router.get(
   '/:id',
-  auth(USER_ROLES.USER, USER_ROLES.PROVIDER),
-  MessageController.getMessage
+  auth(USER_ROLES.USER, USER_ROLES.ADMIN),
+  MessageController.getMessage,
 );
 
 export const MessageRoutes = router;
