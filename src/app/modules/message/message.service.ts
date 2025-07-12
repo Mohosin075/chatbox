@@ -23,27 +23,30 @@ import { User } from '../user/user.model';
 //   return response;
 // };
 
-const sendMessageToDB = async (user: JwtPayload, payload: any): Promise<IMessage> => {
+const sendMessageToDB = async (
+  user: JwtPayload,
+  payload: any,
+): Promise<IMessage> => {
   const senderId = user.id;
   const { chatId } = payload;
 
   payload.sender = senderId;
 
   if (!mongoose.Types.ObjectId.isValid(chatId)) {
-    throw new Error("Invalid chatId");
+    throw new Error('Invalid chatId');
   }
 
   const chat = await Chat.findById(chatId);
   if (!chat) {
-    throw new Error("Chat not found");
+    throw new Error('Chat not found');
   }
 
   const isParticipant = chat.participants.some(
-    (participantId) => participantId.toString() === senderId
+    participantId => participantId.toString() === senderId,
   );
 
   if (!isParticipant) {
-    throw new Error("You are not a participant in this chat");
+    throw new Error('You are not a participant in this chat');
   }
 
   // Save the message
@@ -51,25 +54,23 @@ const sendMessageToDB = async (user: JwtPayload, payload: any): Promise<IMessage
 
   // Get other participants (except sender)
   const otherParticipants = chat.participants.filter(
-    (p) => p.toString() !== senderId
+    p => p.toString() !== senderId,
   );
-
 
   const isUserExists = await User.findById(senderId);
   if (!isUserExists) {
-    throw new Error("User not found");
+    throw new Error('User not found');
   }
 
-  const notifications = otherParticipants.map((receiverId) => ({
+  const notifications = otherParticipants.map(receiverId => ({
     text: `${isUserExists.name} sent you a new message.`,
     receiver: receiverId,
     referenceId: message._id,
-    screen: "chat",
+    screen: 'chat',
     read: false,
   }));
 
   const createdNotifications = await Notification.insertMany(notifications);
-
 
   // Real-time emit to other users
   //@ts-ignore
@@ -78,20 +79,16 @@ const sendMessageToDB = async (user: JwtPayload, payload: any): Promise<IMessage
     // Emit message to chat room
     io.emit(`getMessage::${chatId}`, message);
 
-  createdNotifications.forEach((notification) => {
-  const receiverId = notification.receiver?.toString();
-  if (receiverId && io) {
-    io.emit(
-      `notification::${receiverId}`,
-      notification
-    );
-  }
-});
+    createdNotifications.forEach(notification => {
+      const receiverId = notification.receiver?.toString();
+      if (receiverId && io) {
+        io.emit(`notification::${receiverId}`, notification);
+      }
+    });
   }
 
   return message;
 };
-
 
 // const sendMessageToDB = async (user: JwtPayload, payload: any): Promise<IMessage> => {
 //   const senderId = user.id;
@@ -123,14 +120,9 @@ const sendMessageToDB = async (user: JwtPayload, payload: any): Promise<IMessage
 //   // 4. Create message
 //   const response = await Message.create(payload);
 
-
 //   // after create message sent a notification
 
-
 //   const notification = await Notification.create({})
-
-
-
 
 //   // 5. Emit message to room
 //   //@ts-ignore
@@ -142,15 +134,16 @@ const sendMessageToDB = async (user: JwtPayload, payload: any): Promise<IMessage
 //   return response;
 // };
 
-
-
-
-const getMessageFromDB = async (id: string, user: JwtPayload, query: Record<string, any>): Promise<{ messages: IMessage[], pagination: any, participant:any  }> => {
-  checkMongooseIDValidation(id, "Chat")
+const getMessageFromDB = async (
+  id: string,
+  user: JwtPayload,
+  query: Record<string, any>,
+): Promise<{ messages: IMessage[]; pagination: any; participant: any }> => {
+  checkMongooseIDValidation(id, 'Chat');
 
   const result = new QueryBuilder(
     Message.find({ chatId: id }).sort({ createdAt: 1 }),
-    query
+    query,
   ).paginate();
   const messages = await result.modelQuery.exec();
   const pagination = await result.getPaginationInfo();
@@ -159,9 +152,9 @@ const getMessageFromDB = async (id: string, user: JwtPayload, query: Record<stri
     path: 'participants',
     select: '-_id name profile',
     match: {
-      _id: { $ne: new mongoose.Types.ObjectId(user.id) }
-    }
-  })
+      _id: { $ne: new mongoose.Types.ObjectId(user.id) },
+    },
+  });
 
   return { messages, pagination, participant: participant?.participants[0] };
 };
