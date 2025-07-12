@@ -6,6 +6,21 @@ import { JwtPayload } from 'jsonwebtoken';
 import { checkMongooseIDValidation } from '../../../shared/checkMongooseIDValidation';
 import QueryBuilder from '../../builder/QueryBuilder';
 
+// const sendMessageToDB = async (payload: any): Promise<IMessage> => {
+
+//   // save to DB
+//   const response = await Message.create(payload);
+
+//   //@ts-ignore
+//   const io = global.io;
+//   if (io && payload.chatId) {
+//     // send message to specific chatId Room
+//     io.emit(`getMessage::${payload?.chatId}`, response);
+//   }
+
+//   return response;
+// };
+
 const sendMessageToDB = async (user: JwtPayload, payload: any): Promise<IMessage> => {
   const senderId = user.id;
   const { chatId } = payload;
@@ -40,7 +55,7 @@ const sendMessageToDB = async (user: JwtPayload, payload: any): Promise<IMessage
   //@ts-ignore
   const io = global.io;
   if (io && chatId) {
-    io.to(chatId.toString()).emit(`getMessage::${chatId}`, response);
+    io.emit(`getMessage::${chatId}`, response);
   }
 
   return response;
