@@ -40,6 +40,7 @@ const userSchema = new Schema<IUser, UserModal>(
         verified: { type: Boolean, default: false, },
         subscribe: { type: Boolean, default: false, },
         isDeleted: { type: Boolean },
+        fcmToken: { type: String },
         authentication: {
             type: {
                 isResetPassword: {

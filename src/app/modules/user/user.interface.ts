@@ -18,6 +18,7 @@ export type IUser = {
     verified: boolean;
     subscribe: boolean;
     isDeleted: boolean;
+    fcmToken?: string;
     authentication?: IAuthenticationProps;
 }
 

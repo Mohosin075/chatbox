@@ -7,6 +7,7 @@ import { checkMongooseIDValidation } from '../../../shared/checkMongooseIDValida
 import QueryBuilder from '../../builder/QueryBuilder';
 import { Notification } from '../notification/notification.model';
 import { User } from '../user/user.model';
+import { fcm } from '../../../config/firebase';
 
 // const sendMessageToDB = async (payload: any): Promise<IMessage> => {
 
@@ -28,7 +29,7 @@ const sendMessageToDB = async (
   payload: any,
 ): Promise<IMessage> => {
   const senderId = user.id;
-  const { chatId } = payload;
+  const { chatId , fcmToken} = payload;
 
   payload.sender = senderId;
 
